@@ -4,40 +4,36 @@ using UnityEngine;
 
 public class HandControl : MonoBehaviour
 {
-    public Transform oculusController; // Reference to the Oculus OVR controller (usually OVRInput.Controller.RTouch or OVRInput.Controller.LTouch)
-    public float minDistanceToShow = 1f;
-
-    private Renderer objectRenderer;
+    GameObject controllerL;
+    GameObject controllerR;
+    GameObject controllerH;
+    public GameObject obj;
 
     private void Start()
     {
-        objectRenderer = GetComponent<Renderer>();
-        if (objectRenderer == null)
-        {
-            Debug.LogError("HideObjectBasedOnDistance script requires a Renderer component on the GameObject.");
-            enabled = false;
-        }
+        controllerH = GameObject.Find("OVRCameraRig");
+        controllerL = GameObject.Find("LeftHandAnchor");
+        controllerR = GameObject.Find("RightHandAnchor");
     }
 
-    private void Update()
+        private void Update()
     {
-        if (oculusController == null)
-        {
-            Debug.LogError("Oculus Controller reference is missing.");
-            return;
-        }
+        float distanceL = Vector3.Distance(controllerL.transform.position, obj.transform.position);
+        float distanceR = Vector3.Distance(controllerR.transform.position, obj.transform.position);
+        float distanceH = Vector3.Distance(controllerH.transform.position, obj.transform.position);
+        Debug.Log("distance between L is " + distanceL);
+        Debug.Log("distance between R is " + distanceR);
+        Debug.Log("distance between H is " + distanceH);
 
-        float distance = Vector3.Distance(transform.position, oculusController.position);
-
-        if (distance <= minDistanceToShow)
+        if (distanceL < 2.2f)
         {
-            objectRenderer.enabled = false;
-            // isVisible = false;
+            Debug.Log("non active");
+            obj.SetActive(false);
         }
-        else if (distance > minDistanceToShow)
+        else
         {
-            objectRenderer.enabled = true;
-            // isVisible = true;
+            Debug.Log("active");
+            obj.SetActive(true);
         }
     }
 }

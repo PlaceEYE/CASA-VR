@@ -24,7 +24,7 @@ public class Distance : MonoBehaviour
     void Update()
     {
         float distance = Vector3.Distance(player.transform.position, transform.position);
-        // Debug.Log("distance" + distance);
+        Debug.Log("distance" + distance); 
 
         if (distance < 1f)
         {
